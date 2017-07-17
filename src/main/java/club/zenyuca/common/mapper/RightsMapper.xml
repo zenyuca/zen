@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="club.zenyuca.common.mapper.RightsMapper">
+
+  <resultMap id="resultmap_rights" type="club.zenyuca.common.pojo.Rights">
+    <id column="RIGHTS_SEQ" property="rightsSeq" />
+    <result column="RIGHTS" property="rights" />
+    <result column="RIGHTS_URL" property="rightsUrl" />
+    <result column="RIGHTS_ROLE" property="rightsRole" />
+    <result column="createTime" property="createTime" />
+    <result column="createrId" property="createrId" />
+    <result column="lastModifyTime" property="lastModifyTime" />
+    <result column="updaterId" property="updaterId" />
+  </resultMap>
+
+  <sql id="all_column_list" >
+    RIGHTS_SEQ,
+    <include refid="insert_column_list"></include>
+  </sql>
+  
+  <sql id="insert_column_list" >
+    RIGHTS,
+    RIGHTS_URL,
+    RIGHTS_ROLE,
+    createTime,
+    createrId,
+    lastModifyTime,
+    updaterId
+  </sql> 
+
+  <sql id="value_column_list" >
+    #{rights},
+    #{rightsUrl},
+    #{rightsRole},
+    #{createTime},
+    #{createrId},
+    #{lastModifyTime},
+    #{updaterId}
+  </sql>
+
+  <sql id="where_condition">
+    <if test="rights != null and rights != ''">
+      AND RIGHTS like CONCAT('%',#{rights},'%')
+    </if>
+    <if test="rightsUrl != null and rightsUrl != ''">
+      AND RIGHTS_URL like CONCAT('%',#{rightsUrl},'%')
+    </if>
+    <if test="rightsRole != null and rightsRole != ''">
+      AND RIGHTS_ROLE like CONCAT('%',#{rightsRole},'%')
+    </if>
+    <if test="createTime != null and createTime != ''">
+      AND createTime like CONCAT('%',#{createTime},'%')
+    </if>
+    <if test="createrId != null and createrId != ''">
+      AND createrId like CONCAT('%',#{createrId},'%')
+    </if>
+    <if test="lastModifyTime != null and lastModifyTime != ''">
+      AND lastModifyTime like CONCAT('%',#{lastModifyTime},'%')
+    </if>
+    <if test="updaterId != null and updaterId != ''">
+      AND updaterId like CONCAT('%',#{updaterId},'%')
+    </if>
+  </sql>
+
+  <select id="findAll" resultMap="resultmap_rights" parameterType="club.zenyuca.common.pojo.Rights">
+    SELECT
+      <include refid="all_column_list"></include>
+    FROM base_rights
+    <where>
+      <include refid="where_condition"></include>
+    </where>
+    ORDER BY RIGHTS_SEQ DESC
+  </select>
+
+  <select id="listPage" resultMap="resultmap_rights" parameterType="club.zenyuca.common.pojo.Rights">
+    SELECT
+      <include refid="all_column_list"></include>
+    FROM base_rights
+    <where>
+      <include refid="where_condition"></include>
+    </where>
+    ORDER BY RIGHTS_SEQ DESC
+  </select>
+
+  <select id="load" resultMap="resultmap_rights" parameterType="club.zenyuca.common.pojo.Rights">
+    SELECT
+      <include refid="all_column_list"></include>
+    FROM base_rights
+    <where>
+      <include refid="where_condition"></include>
+    </where>
+  </select>
+  
+  <select id="loadByPK" resultMap="resultmap_rights" parameterType="java.lang.Integer">
+    SELECT
+      <include refid="all_column_list"></include>
+    FROM base_rights
+    WHERE RIGHTS_SEQ = #{RIGHTS_SEQ}
+  </select>
+
+  <select id="findByPKs" resultMap="resultmap_rights" parameterType="java.lang.Integer">
+    SELECT
+      <include refid="all_column_list"></include> 
+    FROM base_rights
+    WHERE RIGHTS_SEQ IN
+    <foreach collection="array" item="RIGHTS_SEQ" open="(" separator="," close=")">
+      #{RIGHTS_SEQ}
+    </foreach>
+  </select>
+  
+  <insert id="insert" parameterType="club.zenyuca.common.pojo.Rights" useGeneratedKeys="true" keyProperty="RIGHTS_SEQ">
+    INSERT INTO base_rights (
+      <include refid="insert_column_list"></include> 
+    )VALUES(
+      <include refid="value_column_list"></include>
+    )
+  </insert>
+
+  <update id="update" parameterType="club.zenyuca.common.pojo.Rights">
+    UPDATE base_rights SET 
+      <if test="rights != null and rights != ''">
+        RIGHTS = #{rights},
+      </if>
+      <if test="rightsUrl != null and rightsUrl != ''">
+        RIGHTS_URL = #{rightsUrl},
+      </if>
+      <if test="rightsRole != null and rightsRole != ''">
+        RIGHTS_ROLE = #{rightsRole},
+      </if>
+      <if test="createTime != null and createTime != ''">
+        createTime = #{createTime},
+      </if>
+      <if test="createrId != null and createrId != ''">
+        createrId = #{createrId},
+      </if>
+      <if test="lastModifyTime != null and lastModifyTime != ''">
+        lastModifyTime = #{lastModifyTime},
+      </if>
+      <if test="updaterId != null and updaterId != ''">
+        updaterId = #{updaterId},
+      </if>
+      RIGHTS_SEQ = #{RIGHTS_SEQ}
+    WHERE RIGHTS_SEQ = #{RIGHTS_SEQ}
+  </update>
+
+  <delete id="delete" parameterType="Integer">
+    DELETE FROM base_rights WHERE RIGHTS_SEQ = #{RIGHTS_SEQ}
+  </delete>
+
+  <select id="countAll" resultType="java.lang.Integer">
+    SELECT
+      count(1)
+    FROM
+      base_rights
+  </select>
+  
+  	<delete id="del" parameterType="club.zenyuca.common.pojo.Rights">
+		DELETE
+		FROM
+			base_rights
+		WHERE
+			RIGHTS_URL = #{rightsUrl} 
+		AND RIGHTS_ROLE = #{rightsRole}
+	</delete>
+    
+</mapper>
+  

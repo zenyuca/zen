@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="club.zenyuca.common.mapper.ActionMapper">
+
+  <resultMap id="resultmap_action" type="club.zenyuca.common.pojo.Action">
+    <id column="ACTION_SEQ" property="actionSeq" />
+    <result column="ACTION_URL" property="actionUrl" />
+    <result column="ACTION_FUNC" property="actionFunc" />
+    <result column="ACTION_TITLE" property="actionTitle" />
+    <result column="ACTION_CLASS" property="actionClass" />
+    <result column="ACTION_ICON" property="actionIcon" />
+    <result column="ACTION_LEVEL" property="actionLevel" />
+    <result column="createTime" property="createTime" />
+    <result column="createrId" property="createrId" />
+    <result column="lastModifyTime" property="lastModifyTime" />
+    <result column="updaterId" property="updaterId" />
+  </resultMap>
+
+  <sql id="all_column_list" >
+    ACTION_SEQ,
+    <include refid="insert_column_list"></include>
+  </sql>
+  
+  <sql id="insert_column_list" >
+    ACTION_URL,
+    ACTION_FUNC,
+    ACTION_TITLE,
+    ACTION_CLASS,
+    ACTION_ICON,
+    ACTION_LEVEL,
+    createTime,
+    createrId,
+    lastModifyTime,
+    updaterId
+  </sql> 
+
+  <sql id="value_column_list" >
+    #{actionUrl},
+    #{actionFunc},
+    #{actionTitle},
+    #{actionClass},
+    #{actionIcon},
+    #{actionLevel},
+    #{createTime},
+    #{createrId},
+    #{lastModifyTime},
+    #{updaterId}
+  </sql>
+
+  <sql id="where_condition">
+    <if test="actionUrl != null and actionUrl != ''">
+      AND ACTION_URL like CONCAT('%',#{actionUrl},'%')
+    </if>
+    <if test="actionFunc != null and actionFunc != ''">
+      AND ACTION_FUNC like CONCAT('%',#{actionFunc},'%')
+    </if>
+    <if test="actionTitle != null and actionTitle != ''">
+      AND ACTION_TITLE like CONCAT('%',#{actionTitle},'%')
+    </if>
+    <if test="actionClass != null and actionClass != ''">
+      AND ACTION_CLASS like CONCAT('%',#{actionClass},'%')
+    </if>
+    <if test="actionIcon != null and actionIcon != ''">
+      AND ACTION_ICON like CONCAT('%',#{actionIcon},'%')
+    </if>
+    <if test="actionLevel != null and actionLevel != ''">
+      AND ACTION_LEVEL like CONCAT('%',#{actionLevel},'%')
+    </if>
+    <if test="createTime != null and createTime != ''">
+      AND createTime like CONCAT('%',#{createTime},'%')
+    </if>
+    <if test="createrId != null and createrId != ''">
+      AND createrId like CONCAT('%',#{createrId},'%')
+    </if>
+    <if test="lastModifyTime != null and lastModifyTime != ''">
+      AND lastModifyTime like CONCAT('%',#{lastModifyTime},'%')
+    </if>
+    <if test="updaterId != null and updaterId != ''">
+      AND updaterId like CONCAT('%',#{updaterId},'%')
+    </if>
+  </sql>
+
+  <select id="findAll" resultMap="resultmap_action" parameterType="club.zenyuca.common.pojo.Action">
+    SELECT
+      <include refid="all_column_list"></include>
+    FROM base_action
+    <where>
+      <include refid="where_condition"></include>
+    </where>    
+    ORDER BY ACTION_SEQ DESC
+  </select>
+
+  <select id="listPage" resultMap="resultmap_action" parameterType="club.zenyuca.common.pojo.Action">
+    SELECT
+      <include refid="all_column_list"></include>
+    FROM base_action
+    <where>
+      <include refid="where_condition"></include>
+    </where>
+    ORDER BY ACTION_SEQ DESC
+  </select>
+
+  <select id="load" resultMap="resultmap_action" parameterType="club.zenyuca.common.pojo.Action">
+    SELECT
+      <include refid="all_column_list"></include>
+    FROM base_action
+    <where>
+      <include refid="where_condition"></include>
+    </where>
+  </select>
+  
+  <select id="loadByPK" resultMap="resultmap_action" parameterType="java.lang.Integer">
+    SELECT
+      <include refid="all_column_list"></include>
+    FROM base_action
+    WHERE ACTION_SEQ = #{ACTION_SEQ}
+  </select>
+
+  <select id="findByPKs" resultMap="resultmap_action" parameterType="java.lang.Integer">
+    SELECT
+      <include refid="all_column_list"></include> 
+    FROM base_action
+    WHERE ACTION_SEQ IN
+    <foreach collection="array" item="ACTION_SEQ" open="(" separator="," close=")">
+      #{ACTION_SEQ}
+    </foreach>
+  </select>
+  
+  <insert id="insert" parameterType="club.zenyuca.common.pojo.Action" useGeneratedKeys="true" keyProperty="ACTION_SEQ">
+    INSERT INTO base_action (
+      <include refid="insert_column_list"></include> 
+    )VALUES(
+      <include refid="value_column_list"></include>
+    )
+  </insert>
+
+  <update id="update" parameterType="club.zenyuca.common.pojo.Action">
+    UPDATE base_action SET 
+      <if test="actionUrl != null and actionUrl != ''">
+        ACTION_URL = #{actionUrl},
+      </if>
+      <if test="actionFunc != null and actionFunc != ''">
+        ACTION_FUNC = #{actionFunc},
+      </if>
+      <if test="actionTitle != null and actionTitle != ''">
+        ACTION_TITLE = #{actionTitle},
+      </if>
+      <if test="actionClass != null and actionClass != ''">
+        ACTION_CLASS = #{actionClass},
+      </if>
+      <if test="actionIcon != null and actionIcon != ''">
+        ACTION_ICON = #{actionIcon},
+      </if>
+      <if test="actionLevel != null and actionLevel != ''">
+        ACTION_LEVEL = #{actionLevel},
+      </if>
+      <if test="createTime != null and createTime != ''">
+        createTime = #{createTime},
+      </if>
+      <if test="createrId != null and createrId != ''">
+        createrId = #{createrId},
+      </if>
+      <if test="lastModifyTime != null and lastModifyTime != ''">
+        lastModifyTime = #{lastModifyTime},
+      </if>
+      <if test="updaterId != null and updaterId != ''">
+        updaterId = #{updaterId},
+      </if>
+      ACTION_SEQ = #{ACTION_SEQ}
+    WHERE ACTION_SEQ = #{ACTION_SEQ}
+  </update>
+
+  <delete id="delete" parameterType="Integer">
+    DELETE FROM base_action WHERE ACTION_SEQ = #{ACTION_SEQ}
+  </delete>
+
+  <select id="countAll" resultType="java.lang.Integer">
+    SELECT
+      count(1)
+    FROM
+      base_action
+  </select>
+  
+  	<select id="findByUrl" parameterType="String" resultMap="resultmap_action">
+		SELECT
+			<include refid="all_column_list"></include>
+		FROM
+			base_action
+		WHERE
+			ACTION_URL = #{actionUrl}
+	</select>
+</mapper>
+  

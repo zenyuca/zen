@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="club.zenyuca.common.mapper.PropertyMapper">
+
+  <resultMap id="resultmap_property" type="club.zenyuca.common.pojo.Property">
+    <id column="PTY_SEQ" property="ptySeq" />
+    <result column="PTY_KEY" property="ptyKey" />
+    <result column="PTY_VALUE" property="ptyValue" />
+    <result column="PTY_NOTE" property="ptyNote" />
+    <result column="createTime" property="createTime" />
+    <result column="createrId" property="createrId" />
+    <result column="lastModifyTime" property="lastModifyTime" />
+    <result column="updaterId" property="updaterId" />
+  </resultMap>
+
+  <sql id="all_column_list" >
+    PTY_SEQ,
+    <include refid="insert_column_list"></include>
+  </sql>
+  
+  <sql id="insert_column_list" >
+    PTY_KEY,
+    PTY_VALUE,
+    PTY_NOTE,
+    createTime,
+    createrId,
+    lastModifyTime,
+    updaterId
+  </sql> 
+
+  <sql id="value_column_list" >
+    #{ptyKey},
+    #{ptyValue},
+    #{ptyNote},
+    #{createTime},
+    #{createrId},
+    #{lastModifyTime},
+    #{updaterId}
+  </sql>
+
+  <sql id="where_condition">
+    <if test="ptyKey != null and ptyKey != ''">
+      AND PTY_KEY like CONCAT('%',#{ptyKey},'%')
+    </if>
+    <if test="ptyValue != null and ptyValue != ''">
+      AND PTY_VALUE like CONCAT('%',#{ptyValue},'%')
+    </if>
+    <if test="ptyNote != null and ptyNote != ''">
+      AND PTY_NOTE like CONCAT('%',#{ptyNote},'%')
+    </if>
+    <if test="createTime != null and createTime != ''">
+      AND createTime like CONCAT('%',#{createTime},'%')
+    </if>
+    <if test="createrId != null and createrId != ''">
+      AND createrId like CONCAT('%',#{createrId},'%')
+    </if>
+    <if test="lastModifyTime != null and lastModifyTime != ''">
+      AND lastModifyTime like CONCAT('%',#{lastModifyTime},'%')
+    </if>
+    <if test="updaterId != null and updaterId != ''">
+      AND updaterId like CONCAT('%',#{updaterId},'%')
+    </if>
+  </sql>
+
+  <select id="findAll" resultMap="resultmap_property" parameterType="club.zenyuca.common.pojo.Property">
+    SELECT
+      <include refid="all_column_list"></include>
+    FROM base_property
+    <where>
+      <include refid="where_condition"></include>
+    </where>
+    ORDER BY PTY_SEQ DESC
+  </select>
+
+  <select id="listPage" resultMap="resultmap_property" parameterType="club.zenyuca.common.pojo.Property">
+    SELECT
+      <include refid="all_column_list"></include>
+    FROM base_property
+    <where>
+      <include refid="where_condition"></include>
+    </where>
+    ORDER BY PTY_SEQ DESC
+  </select>
+
+  <select id="load" resultMap="resultmap_property" parameterType="club.zenyuca.common.pojo.Property">
+    SELECT
+      <include refid="all_column_list"></include>
+    FROM base_property
+    <where>
+      <include refid="where_condition"></include>
+    </where>
+  </select>
+  
+  <select id="loadByPK" resultMap="resultmap_property" parameterType="java.lang.Integer">
+    SELECT
+      <include refid="all_column_list"></include>
+    FROM base_property
+    WHERE PTY_SEQ = #{PTY_SEQ}
+  </select>
+
+  <select id="findByPKs" resultMap="resultmap_property" parameterType="java.lang.Integer">
+    SELECT
+      <include refid="all_column_list"></include> 
+    FROM base_property
+    WHERE PTY_SEQ IN
+    <foreach collection="array" item="PTY_SEQ" open="(" separator="," close=")">
+      #{PTY_SEQ}
+    </foreach>
+  </select>
+  
+  <insert id="insert" parameterType="club.zenyuca.common.pojo.Property" useGeneratedKeys="true" keyProperty="PTY_SEQ">
+    INSERT INTO base_property (
+      <include refid="insert_column_list"></include> 
+    )VALUES(
+      <include refid="value_column_list"></include>
+    )
+  </insert>
+
+  <update id="update" parameterType="club.zenyuca.common.pojo.Property">
+    UPDATE base_property SET 
+      <if test="ptyKey != null and ptyKey != ''">
+        PTY_KEY = #{ptyKey},
+      </if>
+      <if test="ptyValue != null and ptyValue != ''">
+        PTY_VALUE = #{ptyValue},
+      </if>
+      <if test="ptyNote != null and ptyNote != ''">
+        PTY_NOTE = #{ptyNote},
+      </if>
+      <if test="createTime != null and createTime != ''">
+        createTime = #{createTime},
+      </if>
+      <if test="createrId != null and createrId != ''">
+        createrId = #{createrId},
+      </if>
+      <if test="lastModifyTime != null and lastModifyTime != ''">
+        lastModifyTime = #{lastModifyTime},
+      </if>
+      <if test="updaterId != null and updaterId != ''">
+        updaterId = #{updaterId},
+      </if>
+      PTY_SEQ = #{PTY_SEQ}
+    WHERE PTY_SEQ = #{PTY_SEQ}
+  </update>
+
+  <delete id="delete" parameterType="Integer">
+    DELETE FROM base_property WHERE PTY_SEQ = #{PTY_SEQ}
+  </delete>
+
+  <select id="countAll" resultType="java.lang.Integer">
+    SELECT
+      count(1)
+    FROM
+      base_property
+  </select>  
+</mapper>
+  

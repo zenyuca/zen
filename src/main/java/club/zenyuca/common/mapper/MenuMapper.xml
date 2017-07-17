@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="club.zenyuca.common.mapper.MenuMapper">
+
+  <resultMap id="resultmap_menu" type="club.zenyuca.common.pojo.Menu">
+    <id column="MENU_SEQ" property="menuSeq" />
+    <result column="MENU_NAME" property="menuName" />
+    <result column="MENU_LEVEL" property="menuLevel" />
+    <result column="MENU_PARENT" property="menuParent" />
+    <result column="MENU_URL" property="menuUrl" />
+    <result column="MENU_ICON" property="menuIcon" />
+    <result column="MENU_DESCRIBE" property="menuDescribe" />
+    <result column="createTime" property="createTime" />
+    <result column="createrId" property="createrId" />
+    <result column="lastModifyTime" property="lastModifyTime" />
+    <result column="updaterId" property="updaterId" />
+  </resultMap>
+
+  <sql id="all_column_list" >
+    MENU_SEQ,
+    <include refid="insert_column_list"></include>
+  </sql>
+  
+  <sql id="insert_column_list" >
+    MENU_NAME,
+    MENU_LEVEL,
+    MENU_PARENT,
+    MENU_URL,
+    MENU_ICON,
+    MENU_DESCRIBE,
+    createTime,
+    createrId,
+    lastModifyTime,
+    updaterId
+  </sql> 
+
+  <sql id="value_column_list" >
+    #{menuName},
+    #{menuLevel},
+    #{menuParent},
+    #{menuUrl},
+    #{menuIcon},
+    #{menuDescribe},
+    #{createTime},
+    #{createrId},
+    #{lastModifyTime},
+    #{updaterId}
+  </sql>
+
+  <sql id="where_condition">
+    <if test="menuName != null and menuName != ''">
+      AND MENU_NAME like CONCAT('%',#{menuName},'%')
+    </if>
+    <if test="menuLevel != null and menuLevel != ''">
+      AND MENU_LEVEL like CONCAT('%',#{menuLevel},'%')
+    </if>
+    <if test="menuParent != null and menuParent != ''">
+      AND MENU_PARENT like CONCAT('%',#{menuParent},'%')
+    </if>
+    <if test="menuUrl != null and menuUrl != ''">
+      AND MENU_URL like CONCAT('%',#{menuUrl},'%')
+    </if>
+    <if test="menuIcon != null and menuIcon != ''">
+      AND MENU_ICON like CONCAT('%',#{menuIcon},'%')
+    </if>
+    <if test="menuDescribe != null and menuDescribe != ''">
+      AND MENU_DESCRIBE like CONCAT('%',#{menuDescribe},'%')
+    </if>
+    <if test="createTime != null and createTime != ''">
+      AND createTime like CONCAT('%',#{createTime},'%')
+    </if>
+    <if test="createrId != null and createrId != ''">
+      AND createrId like CONCAT('%',#{createrId},'%')
+    </if>
+    <if test="lastModifyTime != null and lastModifyTime != ''">
+      AND lastModifyTime like CONCAT('%',#{lastModifyTime},'%')
+    </if>
+    <if test="updaterId != null and updaterId != ''">
+      AND updaterId like CONCAT('%',#{updaterId},'%')
+    </if>
+  </sql>
+
+  <select id="findAll" resultMap="resultmap_menu" parameterType="club.zenyuca.common.pojo.Menu">
+    SELECT
+      <include refid="all_column_list"></include>
+    FROM base_menu
+    <where>
+      <include refid="where_condition"></include>
+    </where>
+    ORDER BY MENU_SEQ DESC
+  </select>
+
+  <select id="listPage" resultMap="resultmap_menu" parameterType="club.zenyuca.common.pojo.Menu">
+    SELECT
+      <include refid="all_column_list"></include>
+    FROM base_menu
+    <where>
+      <include refid="where_condition"></include>
+    </where>
+    ORDER BY MENU_SEQ DESC
+  </select>
+
+  <select id="load" resultMap="resultmap_menu" parameterType="club.zenyuca.common.pojo.Menu">
+    SELECT
+      <include refid="all_column_list"></include>
+    FROM base_menu
+    <where>
+      <include refid="where_condition"></include>
+    </where>
+  </select>
+  
+  <select id="loadByPK" resultMap="resultmap_menu" parameterType="java.lang.Integer">
+    SELECT
+      <include refid="all_column_list"></include>
+    FROM base_menu
+    WHERE MENU_SEQ = #{MENU_SEQ}
+  </select>
+
+  <select id="findByPKs" resultMap="resultmap_menu" parameterType="java.lang.Integer">
+    SELECT
+      <include refid="all_column_list"></include> 
+    FROM base_menu
+    WHERE MENU_SEQ IN
+    <foreach collection="array" item="MENU_SEQ" open="(" separator="," close=")">
+      #{MENU_SEQ}
+    </foreach>
+  </select>
+  
+  <insert id="insert" parameterType="club.zenyuca.common.pojo.Menu" useGeneratedKeys="true" keyProperty="MENU_SEQ">
+    INSERT INTO base_menu (
+      <include refid="insert_column_list"></include> 
+    )VALUES(
+      <include refid="value_column_list"></include>
+    )
+  </insert>
+
+  <update id="update" parameterType="club.zenyuca.common.pojo.Menu">
+    UPDATE base_menu SET 
+      <if test="menuName != null and menuName != ''">
+        MENU_NAME = #{menuName},
+      </if>
+      <if test="menuLevel != null and menuLevel != ''">
+        MENU_LEVEL = #{menuLevel},
+      </if>
+      <if test="menuParent != null and menuParent != ''">
+        MENU_PARENT = #{menuParent},
+      </if>
+      <if test="menuUrl != null and menuUrl != ''">
+        MENU_URL = #{menuUrl},
+      </if>
+      <if test="menuIcon != null and menuIcon != ''">
+        MENU_ICON = #{menuIcon},
+      </if>
+      <if test="menuDescribe != null and menuDescribe != ''">
+        MENU_DESCRIBE = #{menuDescribe},
+      </if>
+      <if test="createTime != null and createTime != ''">
+        createTime = #{createTime},
+      </if>
+      <if test="createrId != null and createrId != ''">
+        createrId = #{createrId},
+      </if>
+      <if test="lastModifyTime != null and lastModifyTime != ''">
+        lastModifyTime = #{lastModifyTime},
+      </if>
+      <if test="updaterId != null and updaterId != ''">
+        updaterId = #{updaterId},
+      </if>
+      MENU_SEQ = #{MENU_SEQ}
+    WHERE MENU_SEQ = #{MENU_SEQ}
+  </update>
+
+  <delete id="delete" parameterType="Integer">
+    DELETE FROM base_menu WHERE MENU_SEQ = #{MENU_SEQ}
+  </delete>
+
+  <select id="countAll" resultType="java.lang.Integer">
+    SELECT
+      count(1)
+    FROM
+      base_menu
+  </select>  
+  
+  	<select id="findParent" resultMap="resultmap_menu" parameterType="Integer">
+		SELECT
+			<include refid="all_column_list"></include>
+		FROM
+			base_menu
+		WHERE
+			MENU_PARENT = #{id}
+	</select>
+</mapper>
+  

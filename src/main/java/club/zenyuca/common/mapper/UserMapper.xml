@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="club.zenyuca.common.mapper.UserMapper">
+
+  <resultMap id="resultmap_user" type="club.zenyuca.common.pojo.User">
+    <id column="USER_SEQ" property="userSeq" />
+    <result column="USER_LOGINNAME" property="userLoginname" />
+    <result column="USER_LOGINPASS" property="userLoginpass" />
+    <result column="USER_NAME" property="userName" />
+    <result column="USER_ROLE_SEQ" property="userRoleSeq" />
+    <result column="createTime" property="createTime" />
+    <result column="createrId" property="createrId" />
+    <result column="lastModifyTime" property="lastModifyTime" />
+    <result column="updaterId" property="updaterId" />
+  </resultMap>
+
+  <sql id="all_column_list" >
+    USER_SEQ,
+    <include refid="insert_column_list"></include>
+  </sql>
+  
+  <sql id="insert_column_list" >
+    USER_LOGINNAME,
+    USER_LOGINPASS,
+    USER_NAME,
+    USER_ROLE_SEQ,
+    createTime,
+    createrId,
+    lastModifyTime,
+    updaterId
+  </sql> 
+
+  <sql id="value_column_list" >
+    #{userLoginname},
+    #{userLoginpass},
+    #{userName},
+    #{userRoleSeq},
+    #{createTime},
+    #{createrId},
+    #{lastModifyTime},
+    #{updaterId}
+  </sql>
+
+  <sql id="where_condition">
+    <if test="userLoginname != null and userLoginname != ''">
+      AND USER_LOGINNAME like CONCAT('%',#{userLoginname},'%')
+    </if>
+    <if test="userLoginpass != null and userLoginpass != ''">
+      AND USER_LOGINPASS like CONCAT('%',#{userLoginpass},'%')
+    </if>
+    <if test="userName != null and userName != ''">
+      AND USER_NAME like CONCAT('%',#{userName},'%')
+    </if>
+    <if test="userRoleSeq != null and userRoleSeq != ''">
+      AND USER_ROLE_SEQ like CONCAT('%',#{userRoleSeq},'%')
+    </if>
+    <if test="createTime != null and createTime != ''">
+      AND createTime like CONCAT('%',#{createTime},'%')
+    </if>
+    <if test="createrId != null and createrId != ''">
+      AND createrId like CONCAT('%',#{createrId},'%')
+    </if>
+    <if test="lastModifyTime != null and lastModifyTime != ''">
+      AND lastModifyTime like CONCAT('%',#{lastModifyTime},'%')
+    </if>
+    <if test="updaterId != null and updaterId != ''">
+      AND updaterId like CONCAT('%',#{updaterId},'%')
+    </if>
+  </sql>
+
+  <select id="findAll" resultMap="resultmap_user" parameterType="club.zenyuca.common.pojo.User">
+    SELECT
+      <include refid="all_column_list"></include>
+    FROM base_user
+    <where>
+      <include refid="where_condition"></include>
+    </where>
+    ORDER BY USER_SEQ DESC
+  </select>
+
+  <select id="listPage" resultMap="resultmap_user" parameterType="club.zenyuca.common.pojo.User">
+    SELECT
+      <include refid="all_column_list"></include>
+    FROM base_user
+    <where>
+      <include refid="where_condition"></include>
+    </where>
+    ORDER BY USER_SEQ DESC
+  </select>
+
+  <select id="load" resultMap="resultmap_user" parameterType="club.zenyuca.common.pojo.User">
+    SELECT
+      <include refid="all_column_list"></include>
+    FROM base_user
+    <where>
+      <include refid="where_condition"></include>
+    </where>
+  </select>
+  
+  <select id="loadByPK" resultMap="resultmap_user" parameterType="java.lang.Integer">
+    SELECT
+      <include refid="all_column_list"></include>
+    FROM base_user
+    WHERE USER_SEQ = #{USER_SEQ}
+  </select>
+
+  <select id="findByPKs" resultMap="resultmap_user" parameterType="java.lang.Integer">
+    SELECT
+      <include refid="all_column_list"></include> 
+    FROM base_user
+    WHERE USER_SEQ IN
+    <foreach collection="array" item="USER_SEQ" open="(" separator="," close=")">
+      #{USER_SEQ}
+    </foreach>
+  </select>
+  
+  <insert id="insert" parameterType="club.zenyuca.common.pojo.User" useGeneratedKeys="true" keyProperty="USER_SEQ">
+    INSERT INTO base_user (
+      <include refid="insert_column_list"></include> 
+    )VALUES(
+      <include refid="value_column_list"></include>
+    )
+  </insert>
+
+  <update id="update" parameterType="club.zenyuca.common.pojo.User">
+    UPDATE base_user SET 
+      <if test="userLoginname != null and userLoginname != ''">
+        USER_LOGINNAME = #{userLoginname},
+      </if>
+      <if test="userLoginpass != null and userLoginpass != ''">
+        USER_LOGINPASS = #{userLoginpass},
+      </if>
+      <if test="userName != null and userName != ''">
+        USER_NAME = #{userName},
+      </if>
+      <if test="userRoleSeq != null and userRoleSeq != ''">
+        USER_ROLE_SEQ = #{userRoleSeq},
+      </if>
+      <if test="createTime != null and createTime != ''">
+        createTime = #{createTime},
+      </if>
+      <if test="createrId != null and createrId != ''">
+        createrId = #{createrId},
+      </if>
+      <if test="lastModifyTime != null and lastModifyTime != ''">
+        lastModifyTime = #{lastModifyTime},
+      </if>
+      <if test="updaterId != null and updaterId != ''">
+        updaterId = #{updaterId},
+      </if>
+      USER_SEQ = #{USER_SEQ}
+    WHERE USER_SEQ = #{USER_SEQ}
+  </update>
+
+  <delete id="delete" parameterType="Integer">
+    DELETE FROM base_user WHERE USER_SEQ = #{USER_SEQ}
+  </delete>
+
+  <select id="countAll" resultType="java.lang.Integer">
+    SELECT
+      count(1)
+    FROM
+      base_user
+  </select>  
+</mapper>
+  
