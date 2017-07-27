@@ -68,6 +68,37 @@
     </if>
   </sql>
 
+  <sql id="load_where_condition">
+    <if test="userLoginname != null and userLoginname != ''">
+      AND USER_LOGINNAME = #{userLoginname}
+    </if>
+    <if test="userLoginpass != null and userLoginpass != ''">
+      AND USER_LOGINPASS = #{userLoginpass}
+    </if>
+    <if test="userName != null and userName != ''">
+      AND USER_NAME = #{userName}
+    </if>
+    <if test="userRoleSeq != null and userRoleSeq != ''">
+      AND USER_ROLE_SEQ = #{userRoleSeq}
+    </if>
+    <if test="createTime != null and createTime != ''">
+      <![CDATA[
+        AND DATE_FORMAT(createTime, '%Y-%m-%d %H:%i:%s') <= DATE_FORMAT(#{createTime}, '%Y-%m-%d %H:%i:%s');
+      ]]>
+    </if>
+    <if test="createrId != null and createrId != ''">
+      AND createrId = #{createrId}
+    </if>
+    <if test="lastModifyTime != null and lastModifyTime != ''">
+      <![CDATA[
+        AND DATE_FORMAT(lastModifyTime, '%Y-%m-%d %H:%i:%s') <= DATE_FORMAT(#{lastModifyTime}, '%Y-%m-%d %H:%i:%s');
+      ]]>
+    </if>
+    <if test="updaterId != null and updaterId != ''">
+      AND updaterId = #{updaterId}
+    </if>
+  </sql>
+
   <select id="findAll" resultMap="resultmap_user" parameterType="club.zenyuca.common.pojo.User">
     SELECT
       <include refid="all_column_list"></include>
@@ -93,7 +124,7 @@
       <include refid="all_column_list"></include>
     FROM base_user
     <where>
-      <include refid="where_condition"></include>
+      <include refid="load_where_condition"></include>
     </where>
   </select>
   

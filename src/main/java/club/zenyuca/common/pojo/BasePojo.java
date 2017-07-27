@@ -18,9 +18,12 @@ public class BasePojo implements Serializable {
 	private Integer updaterId;
 
 	/** 作为数据库查询条件 */
-	private Map<String, Object> paramsMap = new HashMap<String, Object>();
+	private Map<String, Object> paramsMap;
 
 	public void setParams(Map<String, String[]> map) {
+		if (this.paramsMap == null) {
+			this.paramsMap = new HashMap<String, Object>();
+		}
 		Set<String> keySet = map.keySet();
 		for (String string : keySet) {
 			this.paramsMap.put(string, map.get(string)[0]);

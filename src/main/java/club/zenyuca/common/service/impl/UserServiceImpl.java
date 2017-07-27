@@ -33,7 +33,12 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User load(User model) {
-		return this.userMapper.load(model);
+		model = this.userMapper.load(model);
+		if (model != null) {
+			Role role = this.roleMapper.loadByPK(model.getUserRoleSeq());
+			model.setRole(role);
+		}
+		return model;
 	}
 
 	@Override

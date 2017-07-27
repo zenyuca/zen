@@ -20,7 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.alibaba.fastjson.JSON;
 
 import club.zenyuca.common.config.CondOrderLimit;
-import club.zenyuca.common.config.Config;
+import club.zenyuca.common.config.Const;
 import club.zenyuca.common.pojo.Action;
 import club.zenyuca.common.pojo.Rights;
 import club.zenyuca.common.pojo.User;
@@ -133,7 +133,7 @@ public class BaseController {
 	}
 
 	public String toolbar(String url) {
-		User user = (User) getSessionObj(Config.SESSION_USER);
+		User user = (User) getSessionObj(Const.SESSION_USER);
 		int roleSeq = user.getRole().getRoleSeq();
 
 		StringBuilder toolbar = new StringBuilder();
@@ -210,11 +210,6 @@ public class BaseController {
 	// 得到session
 	public HttpSession getSession() {
 		return request.getSession();
-	}
-
-	/** 设置常量参数 */
-	public void setInitModelStatic(Model model) {
-		model.addAttribute("httpUrl", Config.HttpFtpUrl);
 	}
 
 	/**

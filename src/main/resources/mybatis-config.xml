@@ -6,12 +6,13 @@
 		<setting name="lazyLoadingEnabled" value="true"/>
 		<setting name="aggressiveLazyLoading" value="true"/> -->
 		<setting name="jdbcTypeForNull" value="NULL"/>
+		<setting name="logImpl" value="LOG4J" />
 	</settings>
-	<plugins>
+<!-- 	<plugins> -->
 		<!--配置数据库类型 分页截取关键字-->
-		<plugin interceptor="club.zenyuca.common.util.paging.PagePlugin">
-			<property name="dialect" value="mysql"/>
-			<property name="pageSqlId" value=".*listPage.*"/>
-		</plugin>
-	</plugins>
+<!-- 		<plugin interceptor="club.zenyuca.common.util.paging.PagePlugin"> -->
+<!-- 			<property name="dialect" value="mysql"/> -->
+<!-- 			<property name="pageSqlId" value=".*listPage.*"/> -->
+<!-- 		</plugin> -->
+<!-- 	</plugins> -->
 </configuration>
